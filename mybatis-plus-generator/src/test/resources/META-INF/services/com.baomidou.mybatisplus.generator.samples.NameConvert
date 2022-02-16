@@ -1,1 +1,12 @@
-com.baomidou.mybatisplus.generator.samples.Tzdata1Table1
+com.baomidou.mybatisplus.generator.samples.convert.Tzdata1Table1
+com.baomidou.mybatisplus.generator.samples.convert.MainFanOfflineAlarmHistoryNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanOfflinePacketImportHistoryNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanCityNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanLineNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanOfflineTemperatureHistoryNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.DictNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanOfflineEntiretrendNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.MainFanOfflinePacketImportHistoryExtNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.SystemStationNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.OfflinePacketReceiveTmpNameConvert
+com.baomidou.mybatisplus.generator.samples.convert.OfflineTemperatureMergeNameConvert

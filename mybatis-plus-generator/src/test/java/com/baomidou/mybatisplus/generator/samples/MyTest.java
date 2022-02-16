@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.samples.table.TableInfoHandle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -33,15 +34,19 @@ public class MyTest {
 
     private static final String DB_IP = "192.168.7.22";
     private static final String DB_PORT = "3306";
-    private static final String DB_TADABASE = "main_fan";
+    //private static final String DB_TADABASE = "main_fan";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "tzdata123.";
-    private static final String DB_URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_TADABASE;
-    String tableName = "tz_table1";
+    //private static final String DB_URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" + DB_TADABASE;
+    private static final String DB_URL = "jdbc:mysql://" + DB_IP + ":" + DB_PORT + "/" ;
 
     private static final String OUT_PUT_FILE = "D://mybatis-plus-generator";
     private static final String author = "liming";
-    private static final String base_package = "com.tzkj.mainfan450";
+    private static final String base_package = "com.tzkj.jk21421import";
+
+    public static com.baomidou.mybatisplus.generator.samples.table.TableInfo getTableInfo() {
+        return TableInfoHandle.getTableInfo();
+    }
 
     public void globalConfig(GlobalConfig.Builder config) {
         config.fileOverride();
@@ -50,13 +55,13 @@ public class MyTest {
     }
 
     public static void packageConfig(PackageConfig.Builder config) {
-        config.parent("");
-        config.moduleName(base_package);
+        config.parent(base_package);
+        //config.moduleName(base_package);
         config.entity("business.entity");
         config.service("business.services.interfaces");
         config.serviceImpl("business.services.impl");
         config.mapper("business.dao.interfaces");
-        config.xml("CityMapper.xml");
+        config.xml(getTableInfo().getXmlName()+".xml");
         config.controller("business.controller");
         config.pathInfo(Collections.singletonMap(OutputFile.mapperXml, OUT_PUT_FILE));
     }
@@ -73,8 +78,8 @@ public class MyTest {
 
     public void strategyConfig(StrategyConfig.Builder config) {
         config.enableSkipView();
-        config.addInclude(tableName);
-        INameConvert iNameConvert =  this.createNameConvert(config.build());
+        config.addInclude(getTableInfo().getTableName());
+        INameConvert iNameConvert = this.createNameConvert(config.build());
         config.entityBuilder().enableColumnConstant().enableChainModel().enableLombok().enableTableFieldAnnotation().fileOverride().nameConvert(iNameConvert);
         config.controllerBuilder().enableRestStyle();
         config.serviceBuilder()
@@ -90,43 +95,45 @@ public class MyTest {
             .enableBaseColumnList()
             //.cache(MyMapperCache.class)
             .formatMapperFileName("%sDao")
-            .formatXmlFileName("%sXml");
+            .formatXmlFileName("%sMapper");
     }
 
 
     private INameConvert createNameConvert(StrategyConfig strategyConfig) {
         ServiceLoader<NameConvert> loader = ServiceLoader.load(NameConvert.class);
         Iterator<NameConvert> iterator = loader.iterator();
-        ConvertInput convertInput = ConvertInput.builder().dataBase(DB_TADABASE).tableName(tableName).build();
+        ConvertInput convertInput = ConvertInput.builder().dataBase(getTableInfo().getDatabaseName()).tableName(getTableInfo().getTableName()).build();
         NameConvert nameConvert = null;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             NameConvert nameConvertTmp = iterator.next();
             NameConvert convert = nameConvertTmp.match(convertInput);
-            if (null != convert){
+            if (null != convert) {
                 nameConvert = convert;
                 break;
             }
         }
-        if (null != nameConvert){
+        if (null != nameConvert) {
             NameConvert finalNameConvert = nameConvert;
-            return  new INameConvert() {
+            return new INameConvert() {
                 @Override
                 public @NotNull String entityNameConvert(@NotNull TableInfo tableInfo) {
-                    return finalNameConvert.entityNameConvert(strategyConfig,tableInfo);
+                    return finalNameConvert.entityNameConvert(strategyConfig, tableInfo);
                 }
 
                 @Override
                 public @NotNull String propertyNameConvert(@NotNull TableField field) {
-                    return finalNameConvert.propertyNameConvert(strategyConfig,field);
+                    return finalNameConvert.propertyNameConvert(strategyConfig, field);
                 }
             };
         }
         return new INameConvert.DefaultNameConvert(strategyConfig);
-    };
+    }
+
+    ;
 
 
     public void create() {
-        FastAutoGenerator.create(DB_URL, DB_USER, DB_PASSWORD)
+        FastAutoGenerator.create(DB_URL + TableInfoHandle.getTableInfo().getDatabaseName(), DB_USER, DB_PASSWORD)
             .globalConfig(config -> this.globalConfig(config))
             .packageConfig(config -> this.packageConfig(config))
             .templateConfig(config -> {
@@ -137,7 +144,9 @@ public class MyTest {
                     System.err.println("tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.toString());
                 });
             })*/
-            .strategyConfig(config -> { this.strategyConfig(config);}).execute();
+            .strategyConfig(config -> {
+                this.strategyConfig(config);
+            }).execute();
 
     }
 
